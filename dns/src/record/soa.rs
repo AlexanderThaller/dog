@@ -87,6 +87,7 @@ impl Wire for SOA {
 
 
 #[cfg(test)]
+#[allow(clippy::cast_possible_truncation)]
 mod test {
     use super::*;
     use pretty_assertions::assert_eq;
@@ -109,10 +110,10 @@ mod test {
                    SOA {
                        mname: Labels::encode("bsago.me").unwrap(),
                        rname: Labels::encode("bsago.me").unwrap(),
-                       serial: 1564274434,
+                       serial: 1_564_274_434,
                        refresh_interval: 86400,
                        retry_interval: 7200,
-                       expire_limit: 604800,
+                       expire_limit: 604_800,
                        minimum_ttl: 300,
                    });
     }

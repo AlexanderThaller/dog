@@ -36,14 +36,14 @@ impl Transport for TlsTransport {
         info!("Connecting using domain {:?}", domain);
         let mut stream =
             if self.addr.contains(':') {
-                let mut parts = self.addr.split(":");
+                let mut parts = self.addr.split(':');
                 let domain = parts.nth(0).unwrap();
                 let port = parts.last().unwrap().parse::<u16>().expect("Invalid port number");
 
                 Self::stream(domain, port)?
             }
             else {
-                Self::stream(&*self.addr, 853)?
+                Self::stream(&self.addr, 853)?
             };
 
 

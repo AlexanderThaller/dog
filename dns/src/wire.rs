@@ -23,7 +23,7 @@ impl Request {
         bytes.write_u16::<BigEndian>(1)?;  // query count
         bytes.write_u16::<BigEndian>(0)?;  // answer count
         bytes.write_u16::<BigEndian>(0)?;  // authority RR count
-        bytes.write_u16::<BigEndian>(if self.additional.is_some() { 1 } else { 0 })?;  // additional RR count
+        bytes.write_u16::<BigEndian>(u16::from(self.additional.is_some()))?;  // additional RR count
 
         bytes.write_labels(&self.query.qname)?;
         bytes.write_u16::<BigEndian>(self.query.qtype.type_number())?;
@@ -125,7 +125,7 @@ impl Query {
         let qclass = QClass::from_u16(c.read_u16::<BigEndian>()?);
         trace!("Read qclass -> {:?}", qtype);
 
-        Ok(Self { qtype, qclass, qname })
+        Ok(Self { qname, qclass, qtype})
     }
 }
 

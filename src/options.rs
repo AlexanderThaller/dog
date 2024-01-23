@@ -277,9 +277,8 @@ impl Inputs {
 }
 
 fn is_constant_name(argument: &str) -> bool {
-    let first_char = match argument.chars().next() {
-        Some(c)  => c,
-        None     => return false,
+    let Some(first_char) = argument.chars().next() else {
+        return false
     };
 
     if ! first_char.is_ascii_alphabetic() {
@@ -924,7 +923,7 @@ mod test {
     fn number_parsing() {
         assert_eq!(parse_dec_or_hex("1234"),    Some(1234));
         assert_eq!(parse_dec_or_hex("0x1234"),  Some(0x1234));
-        assert_eq!(parse_dec_or_hex("0xABcd"),  Some(0xABcd));
+        assert_eq!(parse_dec_or_hex("0xABcd"),  Some(0xabcd));
 
         assert_eq!(parse_dec_or_hex("65536"),   None);
         assert_eq!(parse_dec_or_hex("0x65536"), None);

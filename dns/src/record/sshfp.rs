@@ -1,3 +1,5 @@
+use std::fmt::Write;
+
 use log::*;
 
 use crate::wire::*;
@@ -57,13 +59,16 @@ impl SSHFP {
     /// Returns the hexadecimal representation of the fingerprint.
     pub fn hex_fingerprint(&self) -> String {
         self.fingerprint.iter()
-            .map(|byte| format!("{:02x}", byte))
-            .collect()
+            .fold(String::new(), |mut acc, byte| {
+            write!(acc, "{byte:02x}").expect("failed to write to accumulator");
+                acc
+            })
     }
 }
 
 
 #[cfg(test)]
+#[allow(clippy::cast_possible_truncation)]
 mod test {
     use super::*;
 

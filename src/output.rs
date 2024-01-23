@@ -94,7 +94,7 @@ impl OutputFormat {
                             println!("{}", tf.record_payload_summary(record));
                         }
                         Answer::Pseudo { opt, .. } => {
-                            println!("{}", tf.pseudo_record_payload_summary(opt));
+                            println!("{}", TextFormat::pseudo_record_payload_summary(&opt));
                         }
                     }
 
@@ -105,7 +105,7 @@ impl OutputFormat {
 
                 for response in responses {
                     let json = object! {
-                        "queries": json_queries(response.queries),
+                        "queries": json_queries(&response.queries),
                         "answers": json_answers(response.answers),
                         "authorities": json_answers(response.authorities),
                         "additionals": json_answers(response.additionals),
@@ -291,7 +291,7 @@ impl TextFormat {
 
     /// Formats a summary of an OPT pseudo-record. Pseudo-records have a different
     /// structure than standard ones.
-    pub fn pseudo_record_payload_summary(self, opt: OPT) -> String {
+    pub fn pseudo_record_payload_summary(opt: &OPT) -> String {
         format!("{} {} {} {} {:?}",
             opt.udp_payload_size,
             opt.higher_bits,
@@ -339,7 +339,7 @@ fn format_duration_hms(seconds: u32) -> String {
 }
 
 /// Serialises multiple DNS queries as a JSON value.
-fn json_queries(queries: Vec<Query>) -> JsonValue {
+fn json_queries(queries: &[Query]) -> JsonValue {
     let queries = queries.iter().map(|q| {
         object! {
             "name": q.qname.to_string(),
@@ -669,7 +669,7 @@ fn error_message(error: TransportError) -> String {
         TransportError::TlsError(e)           => e.to_string(),
         #[cfg(feature = "with_nativetls")]
         TransportError::TlsHandshakeError(e)  => e.to_string(),
-        #[cfg(any(feature = "with_rustls"))]
+        #[cfg(feature = "with_rustls")]
         TransportError::RustlsInvalidDnsNameError(e) => e.to_string(),
         #[cfg(feature = "with_https")]
         TransportError::HttpError(e)          => e.to_string(),

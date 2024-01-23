@@ -69,9 +69,11 @@ impl Resolver {
         }
 
         for search in &self.search_list {
-            match Labels::encode(search) {
-                Ok(suffix)  => list.push(name.extend(&suffix)),
-                Err(_)      => warn!("Invalid search list: {}", search),
+            if let Ok(suffix) = Labels::encode(search) {
+                list.push(name.extend(&suffix));
+            }
+            else {
+                warn!("Invalid search list: {}", search);
             }
         }
 
@@ -90,9 +92,7 @@ fn system_nameservers() -> Result<Resolver, ResolverLookupError> {
     use std::fs::File;
     use std::io::{BufRead, BufReader};
 
-    if cfg!(test) {
-        panic!("system_nameservers() called from test code");
-    }
+    assert!(!cfg!(test), "system_nameservers() called from test code");
 
     let f = File::open("/etc/resolv.conf")?;
     let reader = BufReader::new(f);

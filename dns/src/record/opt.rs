@@ -90,6 +90,8 @@ impl OPT {
     ///
     /// This is necessary for OPT records to be sent in the Additional section
     /// of requests.
+    /// # Panics
+    /// When the data length is too large to fit in a u16.
     pub fn to_bytes(&self) -> io::Result<Vec<u8>> {
         let mut bytes = Vec::with_capacity(32);
 

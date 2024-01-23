@@ -238,6 +238,7 @@ impl fmt::Display for Altitude {
 
 
 #[cfg(test)]
+#[allow(clippy::cast_possible_truncation)]
 mod test {
     use super::*;
     use pretty_assertions::assert_eq;
@@ -400,13 +401,13 @@ mod position_test {
 
     #[test]
     fn some_latitude() {
-        assert_eq!(Position::from_u32(2332896396, true).unwrap().to_string(),
+        assert_eq!(Position::from_u32(2_332_896_396, true).unwrap().to_string(),
                    String::from("51°30′12.748″ N"));
     }
 
     #[test]
     fn some_longitude() {
-        assert_eq!(Position::from_u32(2147024037, false).unwrap().to_string(),
+        assert_eq!(Position::from_u32(2_147_024_037, false).unwrap().to_string(),
                    String::from("0°7′39.611″ W"));
     }
 
@@ -469,13 +470,13 @@ mod altitude_test {
 
     #[test]
     fn base_level() {
-        assert_eq!(Altitude::from_u32(10000000).to_string(),
+        assert_eq!(Altitude::from_u32(10_000_000).to_string(),
                    String::from("0m"));
     }
 
     #[test]
     fn up_high() {
-        assert_eq!(Altitude::from_u32(20000000).to_string(),
+        assert_eq!(Altitude::from_u32(20_000_000).to_string(),
                    String::from("100000m"));
     }
 
@@ -487,7 +488,7 @@ mod altitude_test {
 
     #[test]
     fn with_decimal() {
-        assert_eq!(Altitude::from_u32(50505050).to_string(),
+        assert_eq!(Altitude::from_u32(50_505_050).to_string(),
                    String::from("405050.50m"));
     }
 }

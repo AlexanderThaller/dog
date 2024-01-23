@@ -66,7 +66,7 @@ impl Table {
             Answer::Pseudo { qname, opt } => {
                 let qtype = self.colours.opt.paint("OPT");
                 let qname = qname.to_string();
-                let summary = self.text_format.pseudo_record_payload_summary(opt);
+                let summary = TextFormat::pseudo_record_payload_summary(&opt);
                 self.rows.push(Row { qtype, qname, ttl: None, summary, section });
             }
         }

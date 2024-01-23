@@ -37,12 +37,12 @@ use tls_stream::TlsStream;
 
 impl Transport for HttpsTransport {
 
-    #[cfg(any(feature = "with_https"))]
+    #[cfg(feature = "with_https")]
     fn send(&self, request: &Request) -> Result<Response, Error> {
         let (domain, path) = self.split_domain().expect("Invalid HTTPS nameserver");
 
         info!("Opening TLS socket to {:?}", domain);
-        let mut stream = Self::stream(&domain, 443)?;
+        let mut stream = Self::stream(domain, 443)?;
 
         debug!("Connected");
 
@@ -100,7 +100,7 @@ impl Transport for HttpsTransport {
 
         let body = &buf[index .. read_len];
         debug!("HTTP body has {} bytes", body.len());
-        let response = Response::from_bytes(&body)?;
+        let response = Response::from_bytes(body)?;
         Ok(response)
     }
 

@@ -75,6 +75,7 @@ impl Labels {
     }
 
     /// Returns a new set of labels concatenating two names.
+    #[must_use]
     pub fn extend(&self, other: &Self) -> Self {
         let mut segments = self.segments.clone();
         segments.extend_from_slice(&other.segments);
@@ -85,7 +86,7 @@ impl Labels {
 impl fmt::Display for Labels {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         for (_, segment) in &self.segments {
-            write!(f, "{}.", segment)?;
+            write!(f, "{segment}.")?;
         }
 
         Ok(())
@@ -197,7 +198,7 @@ fn read_string_recursive(labels: &mut Labels, c: &mut Cursor<&[u8]>, recursions:
                 name_buf.push(c);
             }
 
-            let string = String::from_utf8_lossy(&*name_buf).to_string();
+            let string = String::from_utf8_lossy(&name_buf).to_string();
             labels.segments.push((byte, string));
         }
     }

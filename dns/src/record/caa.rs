@@ -61,6 +61,7 @@ impl Wire for CAA {
 
 
 #[cfg(test)]
+#[allow(clippy::cast_possible_truncation)]
 mod test {
     use super::*;
     use pretty_assertions::assert_eq;
